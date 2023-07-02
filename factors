@@ -1,29 +1,25 @@
 #!/usr/bin/python3
-"""factorize given set of numbers in a file to product of two small numbers"""
-from sys import argv
+"""
+Factorising file for RSA Challenge
+"""
+import sys
+argv = sys.argv
+file = open(argv[1])
+current_line = file.readline()
 
 
-def factorize(number_to_check):
-    """"find two small numbers that multiply to give a given number"""
-    i = 2
+def factorise(dividend):
+    """finds the smaller divisor of a number"""
+    divisor = 2
+    while divisor <= dividend / 2:
+        if dividend % divisor == 0:
+            return int(divisor)
+        divisor += 1
+    return 1
 
-    if number_to_check < 2:
-        return
+while current_line != "\n" and current_line != "":
+    dividend = int(current_line.strip())
+    small_factor = factorise(dividend)
+    print(f"{dividend:.0f}={(dividend/small_factor):.0f}*{small_factor:.0f}")
+    current_line = file.readline()
 
-    while number_to_check % i:
-        i += 1
-    print("{:.0f}={:.0f}*{:.0f}".format(number_to_check, number_to_check / i, i))
-
-if len(argv) != 2:
-    exit()
-
-try:
-    with open(argv[1]) as file:
-        line = file.readline()
-
-        while line != "":
-            number_to_check = int(line.split('\n')[0])
-            factorize(number_to_check)
-            line = file.readline()
-except:
-    pass
